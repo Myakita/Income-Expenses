@@ -46,11 +46,12 @@ QtClass::~QtClass()
     delete ui;
 }
 
-
+QVector<int> vec;
 void QtClass::on_pushButton_clicked()
 {
 
-    QVector<int> vec;
+
+
     QString str = ui->lineEdit_2->text();
     QString strneg = "-"+str;
     QString str1 = ui->lineEdit_4->text();
@@ -66,7 +67,7 @@ void QtClass::on_pushButton_clicked()
         ui->tableWidget->setVerticalHeaderLabels(QStringList() << "Доход (" + str2 + ")");
         ui->tableWidget->setItem(0,0,tbl);
         ui->tableWidget->setItem(0,1,tbl1);
-        vec.push_back(str.toInt());
+        vec.push_front(str.toInt());
 
         bool ok;
         int value = str.toInt(&ok);
@@ -83,7 +84,7 @@ void QtClass::on_pushButton_clicked()
         ui->tableWidget->setVerticalHeaderLabels(QStringList() << "Расход (" + str2 + ")");
         ui->tableWidget->setItem(0,0,tblneg);
         ui->tableWidget->setItem(0,1,tbl1);
-        vec.push_back(strneg.toInt());
+        vec.push_front(strneg.toInt());
 
         bool ok;
         int value = str.toInt(&ok);
@@ -105,8 +106,26 @@ void QtClass::on_pushButton_clicked()
 
 void QtClass::on_pushButton_3_clicked()
 {
-    ui->tableWidget->removeRow(0);
+    int row = 0; // Индекс строки для удаления (в данном случае, всегда первая строка)
+
+    // Удаление строки из таблицы
+    ui->tableWidget->removeRow(row);
+
+    // Удаление соответствующего сегмента из первой диаграммы
+    if (!series->isEmpty()) {
+        QPieSlice *slice = series->slices().at(row);
+        series->remove(slice); // Удаляем сегмент, который соответствует удаленной строке
+        chart->update(); // Обновляем диаграмму
+    }
+
+    // Удаление соответствующего сегмента из второй диаграммы
+    if (!series2->isEmpty()) {
+        QPieSlice *slice = series2->slices().at(row);
+        series2->remove(slice); // Удаляем сегмент, который соответствует удаленной строке
+        chart2->update(); // Обновляем диаграмму
+    }
 }
+
 
 void QtClass::saveToPdf()
 {
