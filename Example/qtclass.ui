@@ -6,19 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
-    <height>646</height>
+    <width>1051</width>
+    <height>549</height>
    </rect>
   </property>
-  <property name="cursor">
-   <cursorShape>ArrowCursor</cursorShape>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Income/Expenses</string>
-  </property>
-  <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/new/prefix1/blackbeard-writing.ico</normaloff>:/new/prefix1/blackbeard-writing.ico</iconset>
+   <string>QtClass</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton">
@@ -26,7 +25,7 @@
      <rect>
       <x>20</x>
       <y>60</y>
-      <width>341</width>
+      <width>571</width>
       <height>41</height>
      </rect>
     </property>
@@ -43,9 +42,9 @@
    <widget class="QLineEdit" name="lineEdit_2">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>300</x>
       <y>20</y>
-      <width>71</width>
+      <width>141</width>
       <height>31</height>
      </rect>
     </property>
@@ -59,10 +58,10 @@
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>620</x>
       <y>20</y>
-      <width>521</width>
-      <height>551</height>
+      <width>411</width>
+      <height>471</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -87,7 +86,7 @@
      <rect>
       <x>20</x>
       <y>20</y>
-      <width>71</width>
+      <width>111</width>
       <height>31</height>
      </rect>
     </property>
@@ -105,9 +104,9 @@
    <widget class="QLineEdit" name="lineEdit_7">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>150</x>
       <y>20</y>
-      <width>101</width>
+      <width>131</width>
       <height>31</height>
      </rect>
     </property>
@@ -130,9 +129,9 @@
    <widget class="QLineEdit" name="lineEdit_4">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>460</x>
       <y>20</y>
-      <width>71</width>
+      <width>131</width>
       <height>31</height>
      </rect>
     </property>
@@ -148,7 +147,7 @@
      <rect>
       <x>20</x>
       <y>110</y>
-      <width>341</width>
+      <width>571</width>
       <height>41</height>
      </rect>
     </property>
@@ -162,14 +161,127 @@
      <string>Удалить строку</string>
     </property>
    </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>591</width>
+      <height>451</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QFrame" name="horizontalFrame_3">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalFrame_4">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="horizontalFrame_2">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalFrame">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+    <zorder>horizontalFrame_2</zorder>
+    <zorder>horizontalFrame_3</zorder>
+   </widget>
+   <zorder>lineEdit_2</zorder>
+   <zorder>tableWidget</zorder>
+   <zorder>comboBox</zorder>
+   <zorder>lineEdit_7</zorder>
+   <zorder>lineEdit_4</zorder>
+   <zorder>horizontalFrame_3</zorder>
+   <zorder>horizontalFrame_2</zorder>
+   <zorder>pushButton_3</zorder>
+   <zorder>pushButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>960</width>
-     <height>25</height>
+     <width>1051</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNew_File">
@@ -186,6 +298,7 @@
     <property name="title">
      <string>Export File</string>
     </property>
+    <addaction name="actionExport_to_PDF"/>
    </widget>
    <widget class="QMenu" name="menuLoad_File">
     <property name="title">
@@ -204,9 +317,12 @@
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExport_to_PDF">
+   <property name="text">
+    <string>Export to PDF</string>
+   </property>
+  </action>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
