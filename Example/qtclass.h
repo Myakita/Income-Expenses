@@ -31,6 +31,10 @@ private slots:
 
     void on_actionSave_to_triggered();
 
+
+    void on_actionLoad_from_triggered();
+    void updateChartsAndLabel();
+
 private:
     Ui::QtClass *ui;
     QPieSeries *series;

@@ -411,6 +411,7 @@
     <property name="title">
      <string>Load File</string>
     </property>
+    <addaction name="actionLoad_from"/>
    </widget>
    <widget class="QMenu" name="menuSave_File">
     <property name="title">
@@ -433,6 +434,11 @@
   <action name="actionSave_to">
    <property name="text">
     <string>Save to</string>
+   </property>
+  </action>
+  <action name="actionLoad_from">
+   <property name="text">
+    <string>Load from</string>
    </property>
   </action>
  </widget>

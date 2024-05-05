@@ -49,10 +49,12 @@ QtClass::~QtClass()
 QVector<int> vec;
 QVector<QString> vec1;
 QVector<QString> vec2;
+QVector<QString> vec3;
 
 int QtClass::get_clicked_row_index() {
     return ui->tableWidget->currentRow();
 }
+
 int sum_vec(QVector<int> vec)
 {
     int sum = 0;
@@ -61,59 +63,66 @@ int sum_vec(QVector<int> vec)
     }
     return sum;
 }
+
+void QtClass::updateChartsAndLabel() {
+    ui->label->setText("Семейные сбережения: " + QString::number(sum_vec(vec)));
+
+    series->clear();
+    series2->clear();
+
+    for (int i = 0; i < vec1.size(); ++i) {
+        bool ok;
+        int value = vec1[i].toInt(&ok);
+        if (!ok) {
+            continue;
+        }
+
+        if (vec2[i].startsWith("Доход")) {
+            series->append(vec2[i], value);
+        } else if (vec2[i].startsWith("Расход")) {
+            series2->append(vec2[i], value);
+        }
+    }
+
+    chart->update();
+    chart2->update();
+}
+
 void QtClass::on_pushButton_clicked()
 {
     QString str = ui->lineEdit_2->text();
-    QString strneg = "-"+str;
-    QString str1 = ui->lineEdit_4->text();
-    QString str2 = ui->lineEdit_7->text();
+        QString strneg = "-" + str;
+        QString str1 = ui->lineEdit_4->text();
+        QString str2 = ui->lineEdit_7->text();
 
-
-    QTableWidgetItem *tbl = new QTableWidgetItem(str);
-    QTableWidgetItem *tblneg = new QTableWidgetItem(strneg);
-    QTableWidgetItem *tbl1 = new QTableWidgetItem(str1);
-    ui->tableWidget->insertRow(0);
-    if(ui->comboBox->currentText() == "Доход")
-    {
-        ui->tableWidget->setVerticalHeaderLabels(QStringList() << "Доход (" + str2 + ")");
-        ui->tableWidget->setItem(0,0,tbl);
-        ui->tableWidget->setItem(0,1,tbl1);
-        vec.push_front(str.toInt());
-        vec1.push_front(str);
-
-        bool ok;
-        int value = str.toInt(&ok);
-        if (!ok) {
-            QMessageBox::warning(this, "Ошибка", "Некорректный ввод данных");
-            return;
+        QTableWidgetItem *tbl = new QTableWidgetItem(str);
+        QTableWidgetItem *tblneg = new QTableWidgetItem(strneg);
+        QTableWidgetItem *tbl1 = new QTableWidgetItem(str1);
+        ui->tableWidget->insertRow(0);
+        if (ui->comboBox->currentText() == "Доход") {
+            ui->tableWidget->setVerticalHeaderLabels(QStringList() << "Доход (" + str2 + ")");
+            ui->tableWidget->setItem(0,0,tbl);
+            ui->tableWidget->setItem(0,1,tbl1);
+            vec.push_front(str.toInt());
+            vec1.push_front(str);
+            vec2.push_front("Доход (" + str2 + ")");
+            vec3.push_front(str1);
         }
-        series->append(str2, value);
-        chart->update();
-
-    }
-    else
-    {
-        ui->tableWidget->setVerticalHeaderLabels(QStringList() << "Расход (" + str2 + ")");
-        ui->tableWidget->setItem(0,0,tblneg);
-        ui->tableWidget->setItem(0,1,tbl1);
-        vec.push_front(strneg.toInt());
-        vec1.push_front(strneg);
-
-        bool ok;
-        int value = str.toInt(&ok);
-        if (!ok) {
-            QMessageBox::warning(this, "Ошибка", "Некорректный ввод данных");
-            return;
+        else {
+            ui->tableWidget->setVerticalHeaderLabels(QStringList() << "Расход (" + str2 + ")");
+            ui->tableWidget->setItem(0,0,tblneg);
+            ui->tableWidget->setItem(0,1,tbl1);
+            vec.push_front(-str.toInt());
+            vec1.push_front(strneg);
+            vec2.push_front("Расход (" + str2 + ")");
+            vec3.push_front(str1);
         }
-        series2->append(str2, value);
 
-        chart2->update();
+        updateChartsAndLabel();
 
-    }
-    ui->label->setText("Семейные сбережения:" + QString::number(sum_vec(vec)));
-    ui->lineEdit_2->clear();
-    ui->lineEdit_4->clear();
-    ui->lineEdit_7->clear();
+        ui->lineEdit_2->clear();
+        ui->lineEdit_4->clear();
+        ui->lineEdit_7->clear();
 
 }
 
@@ -124,18 +133,11 @@ void QtClass::on_pushButton_3_clicked()
     if (clickedRow != -1) {
         vec.remove(clickedRow);
         vec1.remove(clickedRow);
-        ui->label->setText("Семейные сбережения:" + QString::number(sum_vec(vec)));
+        vec2.remove(clickedRow);
+        vec3.remove(clickedRow);
+        ui->label->setText("Семейные сбережения: " + QString::number(sum_vec(vec)));
 
-        if (!series->isEmpty() && series->count() > clickedRow) {
-            QPieSlice *slice = series->slices().at(clickedRow);
-            series->remove(slice);
-            chart->update();
-        }
-        if (!series2->isEmpty() && series2->count() > clickedRow) {
-            QPieSlice *slice = series2->slices().at(clickedRow);
-            series2->remove(slice);
-            chart2->update();
-        }
+        updateChartsAndLabel();
         ui->tableWidget->removeRow(clickedRow);
     }
 }
@@ -150,18 +152,15 @@ void QtClass::saveToPdf()
 
         QPainter painter(&writer);
 
-        // Сохраняем таблицу в QPixmap и масштабируем
         QPixmap tablePixmap = ui->tableWidget->grab();
         tablePixmap = tablePixmap.scaledToWidth(writer.width() * 0.8, Qt::SmoothTransformation);
         painter.drawPixmap(10, 10, tablePixmap);
 
-        // Сохраняем диаграммы в QPixmap и масштабируем
         QPixmap chartPixmap1 = chartview->grab();
         chartPixmap1 = chartPixmap1.scaledToWidth(writer.width() * 0.4, Qt::SmoothTransformation);
         QPixmap chartPixmap2 = chartview2->grab();
         chartPixmap2 = chartPixmap2.scaledToWidth(writer.width() * 0.4, Qt::SmoothTransformation);
 
-        // Рисуем диаграммы под таблицей
         painter.drawPixmap(10, tablePixmap.height() + 20, chartPixmap1);
         painter.drawPixmap(chartPixmap1.width() + 20, tablePixmap.height() + 20, chartPixmap2);
 
@@ -172,6 +171,77 @@ void QtClass::saveToPdf()
 
 void QtClass::on_actionSave_to_triggered()
 {
-
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить файл"), tr("Имя файла"), tr("Файлы данных (*.dat)"));
+    if (!fileName.isEmpty()) {
+        QFile file(fileName);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream writeStream(&file);
+            for (int i = 0; i < vec.size(); i++) {
+                writeStream << vec[i] << "\n";
+            }
+            for (int i = 0; i < qMax(vec1.size(), vec2.size()); i++) {
+                if (i < vec1.size()) {
+                    writeStream << vec1[i] << "\n";
+                }
+                if (i < vec2.size()) {
+                    writeStream << vec2[i] << "\n";
+                }
+            }
+            for (int i = 0; i < vec3.size(); i++) {
+                writeStream << vec3[i] << "\n";
+            }
+            file.close();
+        }
+    }
 }
 
+
+void QtClass::on_actionLoad_from_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Открыть файл"), tr("Имя файла"), tr("Файлы данных (*.dat)"));
+    if (!fileName.isEmpty()) {
+        QFile file(fileName);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            vec2.clear();
+            vec1.clear();
+            vec3.clear();
+            QTextStream in(&file);
+            QString line;
+            while (!(line = in.readLine()).isNull()) {
+                if (line.startsWith("Доход") || line.startsWith("Расход")) {
+                    vec2.push_back(line);
+                } else if (!line.isEmpty()) {
+                    vec1.push_back(line);
+                    if (!(line = in.readLine()).isNull()) {
+                        vec3.push_back(line);
+                    }
+                }
+            }
+            vec.clear();
+            for (int i = 0; i < vec1.size(); ++i) {
+                bool ok;
+                int value = vec1[i].toInt(&ok);
+                if (!ok) {
+                    continue;
+                }
+                vec.push_back(value);
+            }
+            file.close();
+        }
+        ui->tableWidget->clear();
+        ui->tableWidget->setRowCount(vec1.size());
+        QStringList headerLabels;
+        for(const QString& label : vec2) {
+            headerLabels.append(label);
+        }
+        ui->tableWidget->setVerticalHeaderLabels(headerLabels);
+        for (int i = 0; i < vec1.size(); ++i) {
+            QTableWidgetItem *item = new QTableWidgetItem(vec1[i]);
+            QTableWidgetItem *item2 = new QTableWidgetItem(vec3.value(i));
+            ui->tableWidget->setItem(i, 0, item);
+            ui->tableWidget->setItem(i, 1, item2);
+        }
+        updateChartsAndLabel();
+        ui->label->setText("Семейные сбережения: " + QString::number(sum_vec(vec)));
+    }
+}
