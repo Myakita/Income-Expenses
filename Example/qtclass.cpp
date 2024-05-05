@@ -176,19 +176,18 @@ void QtClass::on_actionSave_to_triggered()
         QFile file(fileName);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             QTextStream writeStream(&file);
-            for (int i = 0; i < vec.size(); i++) {
-                writeStream << vec[i] << "\n";
+
+            // Save vec2 data
+            for (const QString& label : vec2) {
+                writeStream << label << "\n";
             }
-            for (int i = 0; i < qMax(vec1.size(), vec2.size()); i++) {
-                if (i < vec1.size()) {
-                    writeStream << vec1[i] << "\n";
-                }
-                if (i < vec2.size()) {
-                    writeStream << vec2[i] << "\n";
-                }
+            // Save vec1 data
+            for (const QString& value : vec1) {
+                writeStream << value << "\n";
             }
-            for (int i = 0; i < vec3.size(); i++) {
-                writeStream << vec3[i] << "\n";
+            // Save vec3 data
+            for (const QString& value : vec3) {
+                writeStream << value << "\n";
             }
             file.close();
         }
@@ -208,12 +207,14 @@ void QtClass::on_actionLoad_from_triggered()
             QTextStream in(&file);
             QString line;
             while (!(line = in.readLine()).isNull()) {
-                if (line.startsWith("Доход") || line.startsWith("Расход")) {
-                    vec2.push_back(line);
-                } else if (!line.isEmpty()) {
-                    vec1.push_back(line);
-                    if (!(line = in.readLine()).isNull()) {
-                        vec3.push_back(line);
+                if (!line.isEmpty()) { // Check for empty lines
+                    if (line.startsWith("Доход") || line.startsWith("Расход")) {
+                        vec2.push_back(line);
+                    } else {
+                        vec1.push_back(line);
+                        if (!(line = in.readLine()).isNull()) {
+                            vec3.push_back(line);
+                        }
                     }
                 }
             }
@@ -227,21 +228,23 @@ void QtClass::on_actionLoad_from_triggered()
                 vec.push_back(value);
             }
             file.close();
+
+            // Clear table before loading new data
+            ui->tableWidget->clear();
+            ui->tableWidget->setRowCount(vec1.size());
+            QStringList headerLabels;
+            for(const QString& label : vec2) {
+                headerLabels.append(label);
+            }
+            ui->tableWidget->setVerticalHeaderLabels(headerLabels);
+            for (int i = 0; i < vec1.size(); ++i) {
+                QTableWidgetItem *item = new QTableWidgetItem(vec1[i]);
+                QTableWidgetItem *item2 = new QTableWidgetItem(vec3.value(i));
+                ui->tableWidget->setItem(i, 0, item);
+                ui->tableWidget->setItem(i, 1, item2);
+            }
+            updateChartsAndLabel();
+            ui->label->setText("Семейные сбережения: " + QString::number(sum_vec(vec)));
         }
-        ui->tableWidget->clear();
-        ui->tableWidget->setRowCount(vec1.size());
-        QStringList headerLabels;
-        for(const QString& label : vec2) {
-            headerLabels.append(label);
-        }
-        ui->tableWidget->setVerticalHeaderLabels(headerLabels);
-        for (int i = 0; i < vec1.size(); ++i) {
-            QTableWidgetItem *item = new QTableWidgetItem(vec1[i]);
-            QTableWidgetItem *item2 = new QTableWidgetItem(vec3.value(i));
-            ui->tableWidget->setItem(i, 0, item);
-            ui->tableWidget->setItem(i, 1, item2);
-        }
-        updateChartsAndLabel();
-        ui->label->setText("Семейные сбережения: " + QString::number(sum_vec(vec)));
     }
 }
