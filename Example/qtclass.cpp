@@ -47,11 +47,22 @@ QtClass::~QtClass()
 }
 
 QVector<int> vec;
+QVector<QString> vec1;
+QVector<QString> vec2;
+
+int QtClass::get_clicked_row_index() {
+    return ui->tableWidget->currentRow();
+}
+int sum_vec(QVector<int> vec)
+{
+    int sum = 0;
+    for (int i = 0; i < vec.size(); ++i) {
+        sum+=vec[i];
+    }
+    return sum;
+}
 void QtClass::on_pushButton_clicked()
 {
-
-
-
     QString str = ui->lineEdit_2->text();
     QString strneg = "-"+str;
     QString str1 = ui->lineEdit_4->text();
@@ -68,6 +79,7 @@ void QtClass::on_pushButton_clicked()
         ui->tableWidget->setItem(0,0,tbl);
         ui->tableWidget->setItem(0,1,tbl1);
         vec.push_front(str.toInt());
+        vec1.push_front(str);
 
         bool ok;
         int value = str.toInt(&ok);
@@ -85,6 +97,7 @@ void QtClass::on_pushButton_clicked()
         ui->tableWidget->setItem(0,0,tblneg);
         ui->tableWidget->setItem(0,1,tbl1);
         vec.push_front(strneg.toInt());
+        vec1.push_front(strneg);
 
         bool ok;
         int value = str.toInt(&ok);
@@ -97,6 +110,7 @@ void QtClass::on_pushButton_clicked()
         chart2->update();
 
     }
+    ui->label->setText("Семейные сбережения:" + QString::number(sum_vec(vec)));
     ui->lineEdit_2->clear();
     ui->lineEdit_4->clear();
     ui->lineEdit_7->clear();
@@ -106,23 +120,23 @@ void QtClass::on_pushButton_clicked()
 
 void QtClass::on_pushButton_3_clicked()
 {
-    int row = 0; // Индекс строки для удаления (в данном случае, всегда первая строка)
+    int clickedRow = get_clicked_row_index();
+    if (clickedRow != -1) {
+        vec.remove(clickedRow);
+        vec1.remove(clickedRow);
+        ui->label->setText("Семейные сбережения:" + QString::number(sum_vec(vec)));
 
-    // Удаление строки из таблицы
-    ui->tableWidget->removeRow(row);
-
-    // Удаление соответствующего сегмента из первой диаграммы
-    if (!series->isEmpty()) {
-        QPieSlice *slice = series->slices().at(row);
-        series->remove(slice); // Удаляем сегмент, который соответствует удаленной строке
-        chart->update(); // Обновляем диаграмму
-    }
-
-    // Удаление соответствующего сегмента из второй диаграммы
-    if (!series2->isEmpty()) {
-        QPieSlice *slice = series2->slices().at(row);
-        series2->remove(slice); // Удаляем сегмент, который соответствует удаленной строке
-        chart2->update(); // Обновляем диаграмму
+        if (!series->isEmpty() && series->count() > clickedRow) {
+            QPieSlice *slice = series->slices().at(clickedRow);
+            series->remove(slice);
+            chart->update();
+        }
+        if (!series2->isEmpty() && series2->count() > clickedRow) {
+            QPieSlice *slice = series2->slices().at(clickedRow);
+            series2->remove(slice);
+            chart2->update();
+        }
+        ui->tableWidget->removeRow(clickedRow);
     }
 }
 
@@ -153,5 +167,11 @@ void QtClass::saveToPdf()
 
         painter.end();
     }
+}
+
+
+void QtClass::on_actionSave_to_triggered()
+{
+
 }
 

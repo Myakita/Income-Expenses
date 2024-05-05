@@ -27,6 +27,10 @@ private slots:
 
     void saveToPdf();
 
+    int get_clicked_row_index();
+
+    void on_actionSave_to_triggered();
+
 private:
     Ui::QtClass *ui;
     QPieSeries *series;

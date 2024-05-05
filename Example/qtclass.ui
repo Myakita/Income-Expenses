@@ -359,14 +359,28 @@
     <zorder>horizontalFrame_2</zorder>
     <zorder>horizontalFrame_3</zorder>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>581</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Times New Roman</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Семейные сбережения:</string>
+    </property>
+   </widget>
    <zorder>layoutWidget</zorder>
-   <zorder>lineEdit_2</zorder>
    <zorder>tableWidget</zorder>
-   <zorder>comboBox</zorder>
-   <zorder>lineEdit_7</zorder>
-   <zorder>lineEdit_4</zorder>
-   <zorder>pushButton_3</zorder>
-   <zorder>pushButton</zorder>
+   <zorder>label</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -402,6 +416,7 @@
     <property name="title">
      <string>Save File</string>
     </property>
+    <addaction name="actionSave_to"/>
    </widget>
    <addaction name="menuNew_File"/>
    <addaction name="menuSave_File"/>
@@ -413,6 +428,11 @@
   <action name="actionExport_to_PDF">
    <property name="text">
     <string>Export to PDF</string>
+   </property>
+  </action>
+  <action name="actionSave_to">
+   <property name="text">
+    <string>Save to</string>
    </property>
   </action>
  </widget>
