@@ -61,7 +61,7 @@
     </column>
     <column>
      <property name="text">
-      <string>Период</string>
+      <string>Дата</string>
      </property>
     </column>
    </widget>
@@ -248,7 +248,7 @@
                <string/>
               </property>
               <property name="placeholderText">
-               <string>Период</string>
+               <string>дата</string>
               </property>
              </widget>
             </item>
@@ -388,18 +388,20 @@
      <x>0</x>
      <y>0</y>
      <width>1050</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNew_File">
     <property name="title">
      <string>New File</string>
     </property>
+    <addaction name="actionCreate_File"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
      <string>About</string>
     </property>
+    <addaction name="action"/>
    </widget>
    <widget class="QMenu" name="menuExport_File">
     <property name="title">
@@ -439,6 +441,16 @@
   <action name="actionLoad_from">
    <property name="text">
     <string>Load from</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Авторы</string>
+   </property>
+  </action>
+  <action name="actionCreate_File">
+   <property name="text">
+    <string>Create File</string>
    </property>
   </action>
  </widget>

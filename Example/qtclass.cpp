@@ -25,6 +25,11 @@ QtClass::QtClass(QWidget *parent)
     chartview2 = new QChartView(chart2);
     chartview2->setMinimumSize(200, 200);
 
+    // Для даты формата дд.мм.гггг
+    QRegularExpression rx("\\d{2}\\.\\d{2}\\.\\d{4}");  // Регулярное выражение для формата "дд.мм.гг"
+    QValidator *validator = new QRegularExpressionValidator(rx, this);
+    ui->lineEdit_4->setValidator(validator);
+
     QHBoxLayout *layout = static_cast<QHBoxLayout*>(ui->horizontalFrame->layout());
     layout->addWidget(chartview);
     layout->addWidget(chartview2);
@@ -34,9 +39,9 @@ QtClass::QtClass(QWidget *parent)
 
     // Подключаем сигнал triggered() к слоту saveToPdf()
     connect(exportAction, &QAction::triggered, this, &QtClass::saveToPdf);
-
-
-
+    connect(ui->menuAbout, &QMenu::triggered, this, &QtClass::showAboutWindow);
+    connect(ui->actionCreate_File, &QAction::triggered, this, &QtClass::confirmCreateFile);
+    connect(ui->tableWidget->horizontalHeader(), &QHeaderView::sectionClicked, this, &QtClass::sortTable);
 
 
 }
@@ -107,6 +112,8 @@ void QtClass::on_pushButton_clicked()
             vec1.push_front(str);
             vec2.push_front("Доход (" + str2 + ")");
             vec3.push_front(str1);
+            tbl->setData(Qt::UserRole, str.toInt());  // Для сортировки по сумме
+            tbl1->setData(Qt::UserRole, QDate::fromString(str1, "dd.MM.yyyy").toJulianDay());
         }
         else {
             ui->tableWidget->setVerticalHeaderLabels(QStringList() << "Расход (" + str2 + ")");
@@ -116,6 +123,8 @@ void QtClass::on_pushButton_clicked()
             vec1.push_front(strneg);
             vec2.push_front("Расход (" + str2 + ")");
             vec3.push_front(str1);
+            tblneg->setData(Qt::UserRole, -str.toInt()); // Для сортировки по сумме
+            tbl1->setData(Qt::UserRole, QDate::fromString(str1, "dd.MM.yyyy").toJulianDay());
         }
 
         updateChartsAndLabel();
@@ -247,4 +256,52 @@ void QtClass::on_actionLoad_from_triggered()
             ui->label->setText("Семейные сбережения: " + QString::number(sum_vec(vec)));
         }
     }
+}
+
+void QtClass::showAboutWindow() {
+    QMessageBox aboutWindow(this);
+    aboutWindow.setWindowTitle("About");
+
+    QString aboutText = "<p style=\"font-size: 14px; line-height: 1.5em;\">Приложение разработали студенты ПНИПУ группы РИС-23-1б <br>Шароглазов Егор и Никита Мокрушин в рамках выполнения<br> творческой работы доцента кафедры ИТАС Поляковой Ольги Андреевны.</p>";
+
+    aboutWindow.setText(aboutText);
+    aboutWindow.exec();
+}
+
+void QtClass::confirmCreateFile() {
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("Подтверждение");
+    msgBox.setText("У вас остались несохраненные изменения. Вы уверены?        ");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Cancel);
+
+    int result = msgBox.exec();
+
+    if (result == QMessageBox::Yes) {
+        ui->lineEdit_2->clear();  // Очистка поля "Сумма"
+        ui->lineEdit_4->clear();  // Очистка поля "Период"
+        ui->lineEdit_7->clear();  // Очистка поля "Примечание"
+
+        ui->tableWidget->clearContents();
+        ui->tableWidget->setRowCount(0);
+
+        series->clear();
+        series2->clear();
+        chart->update();
+        chart2->update();
+
+        vec.clear();
+        vec1.clear();
+        vec2.clear();
+        vec3.clear();
+        updateChartsAndLabel();
+    }
+}
+
+void QtClass::sortTable(int column) {
+    static Qt::SortOrder order = Qt::AscendingOrder;  // Запоминаем порядок сортировки
+
+    ui->tableWidget->sortItems(column, order);
+
+    order = (order == Qt::AscendingOrder) ? Qt::DescendingOrder : Qt::AscendingOrder;  // Меняем порядок для следующего нажатия
 }

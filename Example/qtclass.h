@@ -31,9 +31,15 @@ private slots:
 
     void on_actionSave_to_triggered();
 
+    void showAboutWindow();
+
+    void confirmCreateFile();
 
     void on_actionLoad_from_triggered();
+
     void updateChartsAndLabel();
+
+    void sortTable(int column);
 
 private:
     Ui::QtClass *ui;
