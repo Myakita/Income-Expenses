@@ -1,0 +1,16 @@
+﻿  Graph.cpp
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(384,15): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(385,15): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(390,28): warning C4305: аргумент: усечение из "double" в "GLfloat"
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(390,20): warning C4305: аргумент: усечение из "double" в "GLfloat"
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(390,12): warning C4305: аргумент: усечение из "double" в "GLfloat"
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(581,8): warning C4101: targetVertex: неиспользованная локальная переменная
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(582,8): warning C4101: edgeWeight: неиспользованная локальная переменная
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(447,8): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(446,1): message : во время компиляции функции-члена класс шаблон "void Graph<int>::DrawGraph(void)"
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(619,17): message : см. первую ссылку на "Graph<int>::DrawGraph" в "display"
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(56,12): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "Graph<int>"
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(353,32): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(350,24): message : во время компиляции функции-члена класс шаблон "void Graph<int>::Print(void)"
+C:\Users\kiraq\Desktop\123\Kommivoyazher\Graph.h(595,15): message : см. первую ссылку на "Graph<int>::Print" в "mouseClick"
+  Kommivoyazher.vcxproj -> C:\Users\kiraq\Desktop\123\Kommivoyazher\x64\Debug\Kommivoyazher.exe
